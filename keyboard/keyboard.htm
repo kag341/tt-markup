@@ -1,1 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Keyboard</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<style>
+* {
+    box-sizing: border-box;
+}
+body {
+		 padding:20px;
+		 }
+.more {
+			 display:none;
+			 }
+.closediv {
+			 font-size:14px;
+			 cursor:pointer;
+			 }
+.open {
+			font-size:14px;
+			display:block;
+			cursor:pointer;
+			}
+.article {
+				 border:1px solid gray;
+				 border-radius:6pt;
+				 width:60%;
+				 padding:20px;
+				 margin-left:20px;
+				 }			
+</style>
+<script>
+$( document ).ready(function() {
+	 $( ".open" ).click(function() {
+	 		showmore(this);
+	 });
+	 $(".open2").on('keyup',function(e){
+    if (e.which == 13) {  
+        showmore(this);
+    }
+		});
+ 	 $( ".closediv" ).click(function() {
+	 		hidemore(this);
+	 });
+	 $(".closediv2").keyup(function(event) {
+    if (event.keyCode == 13) {  
+        hidemore(this);
+    }
+		});
+	function hidemore(item) {
+	 				$(item).parent().hide();
+	 				$(item).parent().prev().show();
 
+	}
+	function showmore(item) {
+	 				$(item).next().show();
+					$(item).hide();
+
+	}
+	$('#myModal').modal({
+  keyboard: false
+})
+});
+</script>
+</head>
+<body>
+<h1>Keyboard Accessibility</h1>
+<h2>All Functionality Must be Accessible with the Keyboard</h2>
+<h3>Avoid Mouse-Only Functionality</h3>
+<h4>Mouse-Only</h4>
+<p>In the example below, click "Show More" to show additional text and click "Hide" to hide the additional text. 
+Tab to it with the keyboard and see what happens. </p>
+<p>Inputs, buttons, and links naturally have a keyboard tab stop, but this action is contained in a div, which does not naturally have a tab stop. The action is set with jQuery.</p>
+<p>$( ".open" ).click(function() {<br />
+	 		showmore(this);<br />
+	 });<br />
+	 function showmore(item) {<br/>
+	 				$(item).next().show();<br/>
+					$(item).hide();<br/>
+	}
+</p>
+<div class="article">
+<p>Lorem ipsum dolor sit amet, te iudico semper blandit quo. Cibo tollit eu eos, facer clita apeirian in usu, ei sed homero copiosae. Homero graeci tibique ut eos, munere soluta eirmod mea ne. Est virtute aliquid et, alia assum accumsan vel ei, qui essent definiebas ea. Ne eam voluptatum consectetuer, feugait splendide has cu, appetere consequat appellantur cu has. Ne vis fuisset suscipit platonem, ea eam vidit antiopam, his ex vidit simul delicata. Ea vel nihil doming, vis habeo utroque albucius eu, case deleniti ne sea.
+</p>
+<p class="open">[+] Show More</p>
+<div class="more"><p class="closediv">[-] Hide</p>
+<p>Ancillae reformidans disputationi an usu, munere fabulas splendide ius an. Mei nonumes postulant constituam id, at mel natum delenit. Diam laudem salutandi te pro, id sea partem appareat forensibus, duo id nihil dicant petentium. Splendide intellegam vim in, minim cetero platonem vis no. Dolorum imperdiet ne mei.
+</p></div>
+</div><br />
+<h4>Mouse and Keyboard</h4>
+<p>To make the toggle work with the keyboard, you must first add a tabindex="0" to the two action divs. Tab to it with the keyboard and see what happens.  </p>
+<p>You can tab to the div, but nothing happens. Yet. </p>
+<div class="article">
+<p>Lorem ipsum dolor sit amet, te iudico semper blandit quo. Cibo tollit eu eos, facer clita apeirian in usu, ei sed homero copiosae. Homero graeci tibique ut eos, munere soluta eirmod mea ne. Est virtute aliquid et, alia assum accumsan vel ei, qui essent definiebas ea. Ne eam voluptatum consectetuer, feugait splendide has cu, appetere consequat appellantur cu has. Ne vis fuisset suscipit platonem, ea eam vidit antiopam, his ex vidit simul delicata. Ea vel nihil doming, vis habeo utroque albucius eu, case deleniti ne sea.
+</p>
+<p class="open" tabindex="0">[+] Show More</p>
+<div class="more"><p class="closediv" tabindex="0">[-] Hide</p>
+<p>Ancillae reformidans disputationi an usu, munere fabulas splendide ius an. Mei nonumes postulant constituam id, at mel natum delenit. Diam laudem salutandi te pro, id sea partem appareat forensibus, duo id nihil dicant petentium. Splendide intellegam vim in, minim cetero platonem vis no. Dolorum imperdiet ne mei.
+</p></div>
+</div><br />
+<p>The next step is to include a keyboard action in addition to the .click function.</p>
+
+<p>$(".open2").on('keyup',function(e){<br />
+    if (e.which == 13) {  <br />
+        showmore(this);<br />
+    }<br />
+		});</p>
+<div class="article">
+<p>Lorem ipsum dolor sit amet, te iudico semper blandit quo. Cibo tollit eu eos, facer clita apeirian in usu, ei sed homero copiosae. Homero graeci tibique ut eos, munere soluta eirmod mea ne. Est virtute aliquid et, alia assum accumsan vel ei, qui essent definiebas ea. Ne eam voluptatum consectetuer, feugait splendide has cu, appetere consequat appellantur cu has. Ne vis fuisset suscipit platonem, ea eam vidit antiopam, his ex vidit simul delicata. Ea vel nihil doming, vis habeo utroque albucius eu, case deleniti ne sea.
+</p>
+<p class="open2" tabindex="0">[+] Show More</p>
+<div class="more"><p class="closediv2" tabindex="0">[-] Hide</p>
+<p>Ancillae reformidans disputationi an usu, munere fabulas splendide ius an. Mei nonumes postulant constituam id, at mel natum delenit. Diam laudem salutandi te pro, id sea partem appareat forensibus, duo id nihil dicant petentium. Splendide intellegam vim in, minim cetero platonem vis no. Dolorum imperdiet ne mei.
+</p></div>
+</div>
+<h3>Set the Focus</h3>
+<p>All elements that can be tabbed to must show focus. This is set with CSS.  The mouse hover is set with "hover" and the keyboard focus is set with "focus".</p>
+<p>.closediv:focus,.closeddiv:hover,.open:focus,.open:hover {
+		border: 2px dashed blue;
+}
+</p>
+<style>
+.closediv3:focus,.closeddiv3:hover,.open3:focus,.open3:hover {
+		border: 2px dashed blue;
+}
+</style>
+<div class="article">
+<p>Lorem ipsum dolor sit amet, te iudico semper blandit quo. Cibo tollit eu eos, facer clita apeirian in usu, ei sed homero copiosae. Homero graeci tibique ut eos, munere soluta eirmod mea ne. Est virtute aliquid et, alia assum accumsan vel ei, qui essent definiebas ea. Ne eam voluptatum consectetuer, feugait splendide has cu, appetere consequat appellantur cu has. Ne vis fuisset suscipit platonem, ea eam vidit antiopam, his ex vidit simul delicata. Ea vel nihil doming, vis habeo utroque albucius eu, case deleniti ne sea.
+</p>
+<p class="open3" tabindex="0">[+] Show More</p>
+<div class="more"><p class="closediv3" tabindex="0">[-] Hide</p>
+<p>Ancillae reformidans disputationi an usu, munere fabulas splendide ius an. Mei nonumes postulant constituam id, at mel natum delenit. Diam laudem salutandi te pro, id sea partem appareat forensibus, duo id nihil dicant petentium. Splendide intellegam vim in, minim cetero platonem vis no. Dolorum imperdiet ne mei.
+</p></div>
+</div>
+<h2>Avoid Keyboard Traps</h2>
+<p>A "Keyboard Trap" occurs when the user cannot move focus away from an element using the keyboard. For example, click on the button below 
+to open a Modal window. The modal has a Save Changes button that saves, but doesn't close the window.  There is no Cancel button and no "X" link in the upper-right
+ hand corner. In addition, using the Escape key does not close the modal. The only escape is to re-load the page or use a mouse.  The keyboard-only user is "trapped".  </p>
+
+ <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+       
+        <h4 class="modal-title" id="myModalLabel">Your Info</h4>
+      </div>
+      <div class="modal-body">
+					 <h4>Verify Your Information</h4>
+        <form>
+				  <label for="fname">First Name:</label><input type="text" class="form-control" value="Joe" id="fname"/><br />
+					<label for="lname">Last Name:</label><input type="text" class="form-control" value="Smith" id="lname" /><br />
+					<label for="phone">Phone Number:</label><input type="text" class="form-control" value="202-222-2222" id="phone" />
+				</form>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</body>
+</html>
