@@ -21,7 +21,7 @@ body {
 			 font-size:14px;
 			 cursor:pointer;
 			 }
-.open {
+.open, .open2,.open3,.open4,.closediv,.closediv2,.closediv3,.closediv4 {
 			font-size:14px;
 			display:block;
 			cursor:pointer;
@@ -32,19 +32,53 @@ body {
 				 width:60%;
 				 padding:20px;
 				 margin-left:20px;
-				 }			
+				 }
+.btn:focus, .btn:hover {
+    text-decoration: underline;
+		border:2px grey solid;
+}			
 </style>
 <script>
 $( document ).ready(function() {
 	 $( ".open" ).click(function() {
 	 		showmore(this);
 	 });
-	 $(".open2").on('keyup',function(e){
+
+   $( ".open2" ).click(function() {
+	 		showmore(this);
+	 });
+	 $( ".open3" ).click(function() {
+	 		showmore(this);
+	 });
+	  $( ".open4" ).click(function() {
+	 		showmore(this);
+	 });
+	 		$(".open2").on('keyup',function(e){
+    if (e.which == 13) {  
+        showmore(this);
+    }
+		});	 
+		$(".open3").on('keyup',function(e){
     if (e.which == 13) {  
         showmore(this);
     }
 		});
- 	 $( ".closediv" ).click(function() {
+
+$(".open4").on('keyup',function(e){
+    if (e.which == 13) {  
+        showmore(this);
+    }
+		});
+		 	 $( ".closediv" ).click(function() {
+	 		hidemore(this);
+	 });
+	  $( ".closediv2" ).click(function() {
+	 		hidemore(this);
+	 });
+	  $( ".closediv3" ).click(function() {
+	 		hidemore(this);
+	 });
+$( ".closediv4" ).click(function() {
 	 		hidemore(this);
 	 });
 	 $(".closediv2").keyup(function(event) {
@@ -52,30 +86,43 @@ $( document ).ready(function() {
         hidemore(this);
     }
 		});
-	function hidemore(item) {
-	 				$(item).parent().hide();
-	 				$(item).parent().prev().show();
 
+$(".closediv3").keyup(function(event) {
+    if (event.keyCode == 13) {  
+        hidemore(this);
+    }
+		});	
+		$(".closediv4").keyup(function(event) {
+    if (event.keyCode == 13) {  
+        hidemore(this);
+    }
+		});	
+		function hidemore(item) {
+	 				$(item).parent().hide();
+					$(item).parent().attr('aria-expanded', 'false');
+	 				$(item).parent().prev().show();
+					$(item).parent().prev().focus();
 	}
 	function showmore(item) {
 	 				$(item).next().show();
+			    $(item).next().attr('aria-expanded', 'true');
 					$(item).hide();
-
+					$(item).next().find("p").focus();
 	}
-	$('#myModal').modal({
-  keyboard: false
-})
+	
 });
+
 </script>
 </head>
 <body>
+<main>
 <h1>Keyboard Accessibility</h1>
 <h2>All Functionality Must be Accessible with the Keyboard</h2>
 <h3>Avoid Mouse-Only Functionality</h3>
 <h4>Mouse-Only</h4>
 <p>In the example below, click "Show More" to show additional text and click "Hide" to hide the additional text. 
 Tab to it with the keyboard and see what happens. </p>
-<p>Inputs, buttons, and links naturally have a keyboard tab stop, but this action is contained in a div, which does not naturally have a tab stop. The action is set with jQuery.</p>
+<p>Inputs, buttons, and links naturally have a keyboard tab stop, but this action is contained within a div, which does not naturally have a tab stop.<br /> The action is set with jQuery:</p>
 <p>$( ".open" ).click(function() {<br />
 	 		showmore(this);<br />
 	 });<br />
@@ -103,9 +150,12 @@ Tab to it with the keyboard and see what happens. </p>
 <p>Ancillae reformidans disputationi an usu, munere fabulas splendide ius an. Mei nonumes postulant constituam id, at mel natum delenit. Diam laudem salutandi te pro, id sea partem appareat forensibus, duo id nihil dicant petentium. Splendide intellegam vim in, minim cetero platonem vis no. Dolorum imperdiet ne mei.
 </p></div>
 </div><br />
-<p>The next step is to include a keyboard action in addition to the .click function.</p>
+<p>The next step is to include a keyboard action in addition to the .click function. Be sure to set the focus on the show or hide element after the selection.</p>
 
-<p>$(".open2").on('keyup',function(e){<br />
+<p>$( ".open2" ).click(function() {<br />
+	 		showmore(this);<br />
+	 });<br />
+$(".open2").on('keyup',function(e){<br />
     if (e.which == 13) {  <br />
         showmore(this);<br />
     }<br />
@@ -137,15 +187,16 @@ Tab to it with the keyboard and see what happens. </p>
 <p>Ancillae reformidans disputationi an usu, munere fabulas splendide ius an. Mei nonumes postulant constituam id, at mel natum delenit. Diam laudem salutandi te pro, id sea partem appareat forensibus, duo id nihil dicant petentium. Splendide intellegam vim in, minim cetero platonem vis no. Dolorum imperdiet ne mei.
 </p></div>
 </div>
+
 <h2>Avoid Keyboard Traps</h2>
 <p>A "Keyboard Trap" occurs when the user cannot move focus away from an element using the keyboard. For example, click on the button below 
 to open a Modal window. The modal has a Save Changes button that saves, but doesn't close the window.  There is no Cancel button and no "X" link in the upper-right
  hand corner. In addition, using the Escape key does not close the modal. The only escape is to re-load the page or use a mouse.  The keyboard-only user is "trapped".  </p>
 
- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+ <button type="button" class="btn btn-dark btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
 
   <!-- Modal -->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" data-keyboard="false" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -162,11 +213,12 @@ to open a Modal window. The modal has a Save Changes button that saves, but does
       </div>
       <div class="modal-footer">
 
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-dark">Save changes</button>
       </div>
     </div>
   </div>
 </div>
   </div>
+</main>	
 </body>
 </html>
