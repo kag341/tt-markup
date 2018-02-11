@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Drag and Drop Alternative</title>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <style>
+	body {margin:20px;}
+	h3 {margin-top:10px}
+  #gallery,#gallery2 { float: left; width: 65%; min-height: 12em; }
+  .gallery.custom-state-active { background: #eee; }
+  .gallery li { float: left; width: 96px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
+  .gallery li p { margin: 0 0 0.4em; cursor: move; }
+  .gallery li a { float: right; }
+  .gallery li a.ui-icon-zoomin { float: left;margin-top:4px; }
+	.gallery li a.ui-icon-print, .gallery li a.ui-icon-refresh { float: right;margin-top:4px; }
+  .gallery li img { width: 100%; cursor: move; }
+ 
+  #trash,#trash2 { float: right; width: 32%; min-height: 18em; padding: 1%; }
+  #trash h3,#trash2 h3 { line-height: 16px; margin: 0 0 0.4em; }
+  #trash h3 .ui-icon,#trash h3 .ui-icon { float: left; }
+  #trash .gallery p,#trash2 .gallery p { display: none; }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+ 
+    // There's the gallery and the trash
+    var $gallery = $( "#gallery" ),
+      $trash = $( "#trash" );
+			
+  var $gallery2 = $( "#gallery2" ),
+      $trash2 = $( "#trash2" );
+			
+    // Let the gallery items be draggable
+    $( "li", $gallery ).draggable({
+      cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+      revert: "invalid", // when not dropped, the item will revert back to its initial position
+      containment: "document",
+      helper: "clone",
+      cursor: "move"
+    });
+ $( "li", $gallery2 ).draggable({
+      cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+      revert: "invalid", // when not dropped, the item will revert back to its initial position
+      containment: "document",
+      helper: "clone",
+      cursor: "move"
+    });
+    // Let the trash be droppable, accepting the gallery items
+    $trash.droppable({
+      accept: "#gallery > li",
+      classes: {
+        "ui-droppable-active": "ui-state-highlight"
+      },
+      drop: function( event, ui ) {
+        deleteImage( ui.draggable );
+      }
+    });
+ $trash2.droppable({
+      accept: "#gallery2 > li",
+      classes: {
+        "ui-droppable-active": "ui-state-highlight"
+      },
+      drop: function( event, ui ) {
+        deleteImage2( ui.draggable );
+      }
+    }); 
+    // Let the gallery be droppable as well, accepting items from the trash
+    $gallery.droppable({
+      accept: "#trash li",
+      classes: {
+        "ui-droppable-active": "custom-state-active"
+      },
+      drop: function( event, ui ) {
+        recycleImage( ui.draggable );
+      }
+    });
+ $gallery2.droppable({
+      accept: "#trash2 li",
+      classes: {
+        "ui-droppable-active": "custom-state-active"
+      },
+      drop: function( event, ui ) {
+        recycleImage2( ui.draggable );
+      }
+    }); 
+    // Image deletion function
+    var recycle_icon = "<a href='link/to/recycle/script/when/we/have/js/off' class='ui-icon ui-icon-refresh'>Remove image from order</a>";
+    
+		function deleteImage( $item ) {
+      $item.fadeOut(function() {
+        var $list = $( "ul", $trash ).length ?
+          $( "ul", $trash ) :
+          $( "<ul class='gallery ui-helper-reset'/>" ).appendTo( $trash );
+ 
+        $item.find( "a.ui-icon-print" ).remove();
+        $item.append( recycle_icon ).appendTo( $list ).fadeIn(function() {
+          $item
+            .animate({ width: "48px" })
+            .find( "img" )
+              .animate({ height: "36px" });
+        });
+      });
+    }
+function deleteImage2( $item ) {
+      $item.fadeOut(function() {
+        var $list = $( "ul", $trash2 ).length ?
+          $( "ul", $trash2 ) :
+          $( "<ul class='gallery ui-helper-reset'/>" ).appendTo( $trash2 );
+ 
+        $item.find( "a.ui-icon-print" ).remove();
+        $item.append( recycle_icon ).appendTo( $list ).fadeIn(function() {
+          $item
+            .animate({ width: "48px" })
+            .find( "img" )
+              .animate({ height: "36px" });
+        });
+      });
+    } 
+    // Image recycle function
+    var trash_icon = "<a href='link/to/trash/script/when/we/have/js/off' class='ui-icon ui-icon-print'>Add image to order</a>";
+    function recycleImage( $item ) {
+      $item.fadeOut(function() {
+        $item
+          .find( "a.ui-icon-refresh" )
+            .remove()
+          .end()
+          .css( "width", "96px")
+          .append( trash_icon )
+          .find( "img" )
+            .css( "height", "72px" )
+          .end()
+          .appendTo( $gallery )
+          .fadeIn();
+      });
+    }
+function recycleImage2( $item ) {
+      $item.fadeOut(function() {
+        $item
+          .find( "a.ui-icon-refresh" )
+            .remove()
+          .end()
+          .css( "width", "96px")
+          .append( trash_icon )
+          .find( "img" )
+            .css( "height", "72px" )
+          .end()
+          .appendTo( $gallery2 )
+          .fadeIn();
+      });
+    } 
+    // Image preview function, demonstrating the ui.dialog used as a modal window
+    function viewLargerImage( $link ) {
+      var src = $link.attr( "href" ),
+        title = $link.siblings( "img" ).attr( "alt" ),
+        $modal = $( "img[src$='" + src + "']" );
+
+      if ( $modal.length ) {
+			
+        $modal.dialog( "open" );
+      } else {
+        var img = $( "<img alt='" + title + "' width='384' style='display: none; padding: 8px;' />" )
+          .attr( "src", src ).appendTo( "body" );
+        setTimeout(function() {
+          img.dialog({
+            title: title,
+            width: 400,
+            modal: true
+          });
+        }, 1 );
+      }
+    }
+ 
+    // Resolve the icons behavior with event delegation
+    $( "ul.gallery > li" ).on( "click", function( event ) {
+      var $item = $( this ),
+        $target = $( event.target );
+ 
+      if ( $target.is( "#gallery a.ui-icon-print" ) ) {
+        deleteImage( $item );
+			} else if ( $target.is( "#gallery2 a.ui-icon-print" ) ) {
+        deleteImage2( $item );
+      } else if ( $target.is( "a.ui-icon-zoomin" ) ) {
+        viewLargerImage( $target );
+      } else if ( $target.is( "#trash a.ui-icon-refresh" ) ) {
+        recycleImage( $item );
+      } else if ( $target.is( "#trash2 a.ui-icon-refresh" ) ) {
+        recycleImage2( $item );
+				}
+ 
+      return false;
+    });
+  } );
+  </script>
+</head>
+<body>
+<main>
+<h1>Drag and Drop Alternative
+ <h2>Example of Inaccesible Drag and Drop</h2>
+ <p>Instructions: Drag the photos you want to print to My Order. To remove a photo from your order, drag it out of My Order. </p>
+ <h3 >Items Available for Selection</h3>
+<div class="ui-widget ui-helper-clearfix">
+ 
+<ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
+  <li class="ui-widget-content ui-corner-tr">
+    <p class="ui-widget-header">Picture 1</p>
+    <img src="shetland-sheepdog-2640016__340.jpg" alt="Shetland Sheepdog" width="96" height="72">
+    <a href="shetland-sheepdog-2640016__340-2.jpg" class="ui-icon ui-icon-zoomin">View larger Shetland Sheepdog</a>
+   
+  </li>
+  <li class="ui-widget-content ui-corner-tr">
+    <p class="ui-widget-header">Picture 2</p>
+    <img src="pug-2498523_1920.jpg" alt="Pug" width="96" height="72">
+    <a href="pug-2498523_1920-2.jpg" class="ui-icon ui-icon-zoomin">View larger Pug</a>
+
+  </li>
+  <li class="ui-widget-content ui-corner-tr">
+    <p class="ui-widget-header">Picture 3</p>
+    <img src="dog-1246029_1920.jpg" alt="Bulldog" width="96" height="72">
+    <a href="dog-1246029_1920-2.jpg" class="ui-icon ui-icon-zoomin">View larger Bulldog</a>
+   
+  </li>
+  <li class="ui-widget-content ui-corner-tr">
+    <p class="ui-widget-header">Picture 4</p>
+    <img src="havanese-2780122_1920.jpg" alt="Havanese" width="96" height="72">
+    <a href="havanese-2780122_1920-2.jpg"  class="ui-icon ui-icon-zoomin">View larger Havanese</a>
+
+  </li>
+</ul>
+ 
+<div id="trash" class="ui-widget-content ui-state-default">
+  <h3 class="ui-widget-header">My Order</h3>
+</div>
+ 
+</div>
+ 
+ <h2>Example of Drag and Drop with Accessible Alternative</h2>
+<p>Instructions: Drag the photos you want to print to My Order. To remove a photo from your order, drag it out of My Order. Alternatively, click the printer icon to add a photo to My Order or the restore icon to remove it from My Order.</p>
+<h3 >Items Available for Selection</h3>
+<div class="ui-widget ui-helper-clearfix">
+ 
+<ul id="gallery2" class="gallery ui-helper-reset ui-helper-clearfix">
+  <li class="ui-widget-content ui-corner-tr">
+    <p class="ui-widget-header">Picture 1</p>
+    <img src="shetland-sheepdog-2640016__340.jpg" alt="Shetland Sheepdog" width="96" height="72">
+    <a href="shetland-sheepdog-2640016__340-2.jpg" class="ui-icon ui-icon-zoomin">View larger Shetland Sheepdog</a>
+    <a href="link/to/trash/script/when/we/have/js/off" class="ui-icon ui-icon-print">Add to My Order</a>
+  </li>
+  <li class="ui-widget-content ui-corner-tr">
+     <p class="ui-widget-header">Picture 2</p>
+    <img src="pug-2498523_1920.jpg" alt="Pug" width="96" height="72">
+    <a href="pug-2498523_1920-2.jpg" class="ui-icon ui-icon-zoomin">View larger Pug</a>
+    <a href="link/to/trash/script/when/we/have/js/off" class="ui-icon ui-icon-print">Add to My Order</a>
+  </li>
+  <li class="ui-widget-content ui-corner-tr">
+    <p class="ui-widget-header">Picture 3</p>
+    <img src="dog-1246029_1920.jpg" alt="Bulldog" width="96" height="72">
+    <a href="dog-1246029_1920-2.jpg" class="ui-icon ui-icon-zoomin">View larger Bulldog</a>
+    <a href="link/to/trash/script/when/we/have/js/off" class="ui-icon ui-icon-print">Add to My Order</a>
+  </li>
+  <li class="ui-widget-content ui-corner-tr">
+     <p class="ui-widget-header">Picture 4</p>
+    <img src="havanese-2780122_1920.jpg" alt="Havanese" width="96" height="72">
+    <a href="havanese-2780122_1920-2.jpg" class="ui-icon ui-icon-zoomin">View larger Havanese</a>
+    <a href="link/to/trash/script/when/we/have/js/off" class="ui-icon ui-icon-print">Add to My Order</a>
+  </li>
+</ul>
+ 
+<div id="trash2" class="ui-widget-content ui-state-default">
+  <h3 class="ui-widget-header">My Order</h3>
+</div>
+ 
+</div>
+</main>
+</body>
+</html>
