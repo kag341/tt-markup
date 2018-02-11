@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Login</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+<style>
+main {
+    width:500px;
+		margin:20px;
+		
+}
+form {
+    padding-top:20px;
+}
+h1,.button_div {
+    text-align:center;
+}
+.btn:focus, .btn:hover {
+    text-decoration: underline;
+}
+
+</style>
+<script>
+</script>
+</head>
+<body>
+<main >
+<h1>Login</h1>
+<div>* indicates a required field</div>
+<form method="post" action="/login_actn.php" name="login_form">
+<div class="form-group row">
+<label for="userName" class="col-sm-3 col-form-label">User name: *</label>
+<div class="col-sm-9">
+<input type="text" id="userName" name="userName" value="" required aria-required="true" maxlength="12" class="form-control">
+</div>
+</div>
+<div class="form-group row">
+<label for="password" class="col-sm-3 col-form-label">Password: *</label>
+<div class="col-sm-9">
+<input type="password" id="password" name="password" value="" required aria-required="true" maxlength="12" class="form-control">
+</div>
+</div>
+<div class="button_div">
+<button type="submit" id="loginBtn" class="btn btn-dark" name="loginBtn" value="Login">Login</button>
+</div>
+</form>
+</main>
+</body>
+</html>
